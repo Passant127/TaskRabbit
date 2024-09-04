@@ -55,7 +55,7 @@ namespace Employee.Services
                 // Publish SalaryUpdatedEvent to MassTransit
                 var salaryUpdatedEvent = new SalaryUpdatedEvent
                 {
-                    EmployeeId = existingEmployee.Id,
+                    EmployeeId = id,
                     NewSalary = existingEmployee.Salary
                 };
                 _publishEndpoint.Publish(salaryUpdatedEvent);
