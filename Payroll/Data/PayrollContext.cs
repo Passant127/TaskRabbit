@@ -1,19 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Task1.Models;
+using Payrolls.Models;
 
-namespace Task1.Data;
+namespace Payroll.Data;
 
 public class PayrollContext : DbContext
 {
-    protected readonly IConfiguration Configuration;
-    public PayrollContext(IConfiguration configuration)
+    public PayrollContext(DbContextOptions dbContext) : base(dbContext)
     {
-        Configuration = configuration;
+
     }
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        options.UseSqlServer(Configuration.GetConnectionString("PayrollConnection"));
+        modelBuilder.Entity<PayrollModel>()
+            .Property(p => p.Salary)
+            .HasPrecision(18, 2);
     }
+
 
     public DbSet<PayrollModel> Payrolls { get; set; }
 

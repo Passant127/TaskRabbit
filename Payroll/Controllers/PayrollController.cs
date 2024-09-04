@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Task1.Contracts;
-using Task1.DTOS;
+using Shared.DTOS;
+using Payroll.Contracts;
 
-namespace Task1.Controllers
+
+namespace Payroll.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -32,28 +33,7 @@ namespace Task1.Controllers
             return Ok(payroll);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddPayroll([FromBody] PayrollRequestDto payrollRequest)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var createdPayroll = await _payrollService.PayrollAsync(payrollRequest);
-            return CreatedAtAction(nameof(GetPayrollById), new { id = createdPayroll }, createdPayroll);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePayroll(int id, [FromBody] PayrollRequestDto payrollRequest)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var updatedPayroll = await _payrollService.UpdatePayrollAsync(id, payrollRequest);
-            if (updatedPayroll == null)
-                return NotFound();
-
-            return Ok(updatedPayroll);
-        }
+ 
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePayroll(int id)

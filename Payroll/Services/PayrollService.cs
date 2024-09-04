@@ -1,10 +1,13 @@
-﻿using Task1.Contracts;
-using Task1.DTOS;
-using Task1.Models;
-using Microsoft.EntityFrameworkCore;
-using Task1.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Payroll.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Shared.DTOS;
+using Payrolls.Models;
+using Payroll.Contracts;
 
-namespace Task1.Services
+namespace Payroll.Services
 {
     public class PayrollService : IPayrollService
     {
@@ -15,13 +18,10 @@ namespace Task1.Services
             _payrollContext = payrollContext;
         }
 
-        public async Task<bool> DeletePayrollAsync(int Id)
+        public async Task<bool> DeletePayrollAsync(int id)
         {
-            var payroll = await _payrollContext.Payrolls.FindAsync(Id);
-            if (payroll == null)
-            {
-                return false;
-            }
+            var payroll = await _payrollContext.Payrolls.FindAsync(id);
+            if (payroll == null) return false;
 
             _payrollContext.Payrolls.Remove(payroll);
             await _payrollContext.SaveChangesAsync();
@@ -31,23 +31,21 @@ namespace Task1.Services
 
         public async Task<IEnumerable<PayrollResponseDto>> GetAllPayrollsAsync()
         {
-            var payrolls = await _payrollContext.Payrolls.ToListAsync();
-            return payrolls.Select(p => new PayrollResponseDto
-            {
-                Id = p.Id,
-                EmployeeId = p.EmployeeId,
-                Salary = p.Salary,
-                Date = p.PayDate
-            }).ToList();
+            return await _payrollContext.Payrolls
+                .Select(p => new PayrollResponseDto
+                {
+                    Id = p.Id,
+                    EmployeeId = p.EmployeeId,
+                    Salary = p.Salary,
+                    Date = p.PayDate
+                })
+                .ToListAsync();
         }
 
-        public async Task<PayrollResponseDto> GetPayrollByIdAsync(int Id)
+        public async Task<PayrollResponseDto> GetPayrollByIdAsync(int id)
         {
-            var payroll = await _payrollContext.Payrolls.FindAsync(Id);
-            if (payroll == null)
-            {
-                return null;
-            }
+            var payroll = await _payrollContext.Payrolls.FindAsync(id);
+            if (payroll == null) return null;
 
             return new PayrollResponseDto
             {
@@ -58,47 +56,6 @@ namespace Task1.Services
             };
         }
 
-        public async Task<PayrollResponseDto> PayrollAsync(PayrollRequestDto payrollRequest)
-        {
-            var payroll = new PayrollModel
-            {
-                EmployeeId = payrollRequest.EmployeeId,
-                Salary = payrollRequest.Salary,
-                PayDate = payrollRequest.Date
-            };
 
-            _payrollContext.Payrolls.Add(payroll);
-            await _payrollContext.SaveChangesAsync();
-
-            return new PayrollResponseDto
-            {
-                Id = payroll.Id,
-                EmployeeId = payroll.EmployeeId,
-                Salary = payroll.Salary,
-                Date = payroll.PayDate
-            };
-        }
-        public async Task<PayrollResponseDto> UpdatePayrollAsync(int Id, PayrollRequestDto payrollRequest)
-        {
-            var payroll = await _payrollContext.Payrolls.FindAsync(Id);
-            if (payroll == null)
-            {
-                return null;
-            }
-
-            payroll.Salary = payrollRequest.Salary;
-            payroll.PayDate = payrollRequest.Date;
-
-            _payrollContext.Payrolls.Update(payroll);
-            await _payrollContext.SaveChangesAsync();
-
-            return new PayrollResponseDto
-            {
-                Id = payroll.Id,
-                EmployeeId = payroll.EmployeeId,
-                Salary = payroll.Salary,
-                Date = payroll.PayDate
-            };
-        }
     }
 }

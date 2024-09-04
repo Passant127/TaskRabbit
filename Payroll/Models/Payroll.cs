@@ -1,4 +1,4 @@
-﻿namespace Task1.Models;
+﻿namespace Payrolls.Models;
 
 public class PayrollModel 
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Task1.Models;
+using Employee.Models;
 
-namespace Task1.Data;
+namespace Employee.Data;
 
 public class EmployeeContext:DbContext
 {

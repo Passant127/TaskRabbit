@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Task1.Contracts;
-using Task1.DTOS;
-using Task1.Models;
+using Shared.DTOS;
+using Employee.Contracts;
+using Employee.Models;
 
-namespace Task1.Controllers
+namespace Employee.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -50,20 +50,13 @@ namespace Task1.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateEmployee(int id, [FromBody] EmployeeRequestDto employeeRequest)
+        public IActionResult UpdateEmployee(int id, [FromBody] SalaryUpdateRequestDto employeeRequest)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var employee = new EmployeeModel
-            {
-                Id = id,
-                Name = employeeRequest.Name,
-               
-                Salary = employeeRequest.Salary
-            };
-
-            var updatedEmployee = _employeeService.UpdateEmployee(employee);
+         
+            var updatedEmployee = _employeeService.UpdateEmployeeSalary(id, employeeRequest);
             if (updatedEmployee == null)
                 return NotFound();
 

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employee", "Employee\Employee.csproj", "{6A224DFD-1A27-4315-9CDA-6808138B4DF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Employee", "Employee\Employee.csproj", "{6A224DFD-1A27-4315-9CDA-6808138B4DF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll", "Payroll\Payroll.csproj", "{C5A3D75E-91EC-4E39-9651-772A339D9558}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payroll", "Payroll\Payroll.csproj", "{C5A3D75E-91EC-4E39-9651-772A339D9558}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{2E9F86A7-2990-40C6-86DC-BC88C3130AA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C5A3D75E-91EC-4E39-9651-772A339D9558}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5A3D75E-91EC-4E39-9651-772A339D9558}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5A3D75E-91EC-4E39-9651-772A339D9558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E9F86A7-2990-40C6-86DC-BC88C3130AA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E9F86A7-2990-40C6-86DC-BC88C3130AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E9F86A7-2990-40C6-86DC-BC88C3130AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E9F86A7-2990-40C6-86DC-BC88C3130AA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

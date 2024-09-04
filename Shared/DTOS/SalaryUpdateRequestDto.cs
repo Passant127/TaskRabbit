@@ -1,7 +1,6 @@
-﻿namespace Task1.DTOS;
+﻿namespace Shared.DTOS;
 
 public class SalaryUpdateRequestDto
 {
-    public int EmployeeId { get; set; }
     public decimal NewSalary { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿namespace Task1.DTOS;
+﻿namespace Shared.DTOS;
 
 public class EmployeeRequestDto
 { 

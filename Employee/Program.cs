@@ -1,8 +1,10 @@
 
+
 using Microsoft.EntityFrameworkCore;
-using Task1.Contracts;
-using Task1.Data;
-using Task1.Services;
+using Employee.Contracts;
+using Employee.Data;
+using Employee.Services;
+using MassTransit;
 
 namespace Employee
 {
@@ -11,6 +13,8 @@ namespace Employee
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
 
             // Add services to the container.
 
@@ -19,9 +23,26 @@ namespace Employee
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-            builder.Services.AddControllers();
+            builder.Services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host("localhost", "/", h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+
+                });
+            });
+
+
+
+            builder.Services.AddMassTransitHostedService();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddControllers();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();

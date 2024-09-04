@@ -1,85 +1,80 @@
-﻿// Services/EmployeeService.cs
-using Task1.Contracts;
-using Task1.DTOS;
-using Task1.Models;
+﻿using Employee.Contracts;
+using Employee.Models;
 using Microsoft.EntityFrameworkCore;
-using Task1.Data;
-using Task1.RabitMQ;
+using Employee.Data;
+using MassTransit;
+using Shared.DTOS;
+using Shared.Events;
 
-namespace Task1.Services
+namespace Employee.Services
 {
     public class EmployeeService : IEmployeeService
     {
- 
         private readonly EmployeeContext _employeeContext;
-        private readonly IRabitMQProducer _salaryUpdateProducer;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public EmployeeService(EmployeeContext employeeContext, IRabitMQProducer salaryUpdateProducer)
+        public EmployeeService(EmployeeContext employeeContext, IPublishEndpoint publishEndpoint)
         {
             _employeeContext = employeeContext;
-            _salaryUpdateProducer = salaryUpdateProducer;
+            _publishEndpoint = publishEndpoint;
         }
 
-      
-        public EmployeeRequestDto AddEmployee(EmployeeModel employee)
+        public async Task<EmployeeResponseDto> AddEmployee(EmployeeModel employee)
         {
-            if (employee == null)
-            {
-                throw new ArgumentNullException(nameof(employee));
-            }
+            if (employee == null) throw new ArgumentNullException(nameof(employee));
 
             _employeeContext.Employees.Add(employee);
-            _employeeContext.SaveChanges();
+             _employeeContext.SaveChanges();
 
-            return new EmployeeRequestDto
+            var employeeAddedEvent = new EmployeeAddedEvent
+            {
+                EmployeeId = employee.Id,
+                Name = employee.Name,
+                Salary = employee.Salary
+            };
+             _publishEndpoint.Publish(employeeAddedEvent);
+
+            return new EmployeeResponseDto
             {
                 Name = employee.Name,
-
                 Salary = employee.Salary
             };
         }
 
-
-        public EmployeeRequestDto UpdateEmployee(EmployeeModel employee)
+        public EmployeeResponseDto UpdateEmployeeSalary(int id,SalaryUpdateRequestDto employee)
         {
-            var existingEmployee = _employeeContext.Employees.Find(employee.Id);
-            if (existingEmployee == null)
+            var existingEmployee = _employeeContext.Employees.Find(id);
+            if (existingEmployee == null) return null;
+
+          
+
+            if (existingEmployee.Salary != employee.NewSalary)
             {
-                return null;
-            }
+                existingEmployee.Salary = employee.NewSalary;
 
-            existingEmployee.Name = employee.Name;
-
-            if (existingEmployee.Salary != employee.Salary)
-            {
-                existingEmployee.Salary = employee.Salary;
-
-
-                var salaryUpdateMessage = new
+                // Publish SalaryUpdatedEvent to MassTransit
+                var salaryUpdatedEvent = new SalaryUpdatedEvent
                 {
                     EmployeeId = existingEmployee.Id,
                     NewSalary = existingEmployee.Salary
                 };
-
-                _salaryUpdateProducer.SendMessage(salaryUpdateMessage);
+                _publishEndpoint.Publish(salaryUpdatedEvent);
             }
 
             _employeeContext.SaveChanges();
 
-            return new EmployeeRequestDto
+            return new EmployeeResponseDto
             {
+                Id = id,
                 Name = existingEmployee.Name,
-
                 Salary = existingEmployee.Salary
             };
         }
+
         public bool DeleteEmployee(int id)
         {
             var employee = _employeeContext.Employees.Find(id);
-            if (employee == null)
-            {
-                return false;
-            }
+            if (employee == null) return false;
 
             _employeeContext.Employees.Remove(employee);
             _employeeContext.SaveChanges();
@@ -90,10 +85,7 @@ namespace Task1.Services
         public EmployeeResponseDto GetEmployeeById(int id)
         {
             var employee = _employeeContext.Employees.Find(id);
-            if (employee == null)
-            {
-                return null;
-            }
+            if (employee == null) return null;
 
             return new EmployeeResponseDto
             {
@@ -114,7 +106,5 @@ namespace Task1.Services
                 })
                 .ToList();
         }
-
-      
     }
 }

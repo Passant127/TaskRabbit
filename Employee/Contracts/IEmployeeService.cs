@@ -1,13 +1,13 @@
-﻿using Task1.DTOS;
-using Task1.Models;
+﻿using Shared.DTOS;
+using Employee.Models;
 
-namespace Task1.Contracts;
+namespace Employee.Contracts;
 
 public interface IEmployeeService
 {
     public IEnumerable<EmployeeResponseDto> GetEmployeeList();
     public EmployeeResponseDto GetEmployeeById(int id);
-    public EmployeeRequestDto AddEmployee(EmployeeModel employee);
-    public EmployeeRequestDto UpdateEmployee(EmployeeModel employee);
+    public Task<EmployeeResponseDto> AddEmployee(EmployeeModel employee);
+    public EmployeeResponseDto UpdateEmployeeSalary(int id, SalaryUpdateRequestDto employee);
     public bool DeleteEmployee(int Id);
 }
