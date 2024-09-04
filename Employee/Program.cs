@@ -38,7 +38,7 @@ namespace Employee
 
 
 
-            builder.Services.AddMassTransitHostedService();
+        
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -54,7 +54,7 @@ namespace Employee
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+           
 
             app.UseAuthorization();
 

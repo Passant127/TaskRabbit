@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payroll", "Payroll\Payroll.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{2E9F86A7-2990-40C6-86DC-BC88C3130AA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIGateway", "APIGateway\APIGateway.csproj", "{23B238A4-23F5-424A-9597-2EB72A2EACFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2E9F86A7-2990-40C6-86DC-BC88C3130AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E9F86A7-2990-40C6-86DC-BC88C3130AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E9F86A7-2990-40C6-86DC-BC88C3130AA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23B238A4-23F5-424A-9597-2EB72A2EACFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23B238A4-23F5-424A-9597-2EB72A2EACFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23B238A4-23F5-424A-9597-2EB72A2EACFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23B238A4-23F5-424A-9597-2EB72A2EACFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
